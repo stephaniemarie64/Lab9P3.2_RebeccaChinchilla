@@ -1,8 +1,18 @@
 #include "AdministradoraArchivos.h"
 
-AdministradoraArchivos::AdministradoraArchivos() {
-    rutaArchivoUsuarios = "usuarios.txt";
-    rutaArchivoWallets = "wallets.txt";
+AdministradoraArchivos::AdministradoraArchivos(const std::string& directorio) {
+    for (const auto& archivo : fs::directory_iterator(directorio)) {
+        if (archivo.path().extension() == ".lab") {
+            std::ifstream file(archivo.path(), std::ios::binary);
+            if (file) {
+
+                std::cout << "Leyendo archivo binario: " << archivo.path() << std::endl;
+            }
+            else {
+                std::cerr << "Error al abrir el archivo: " << archivo.path() << std::endl;
+            }
+        }
+    }
 }
 
 void AdministradoraArchivos::guardarUsuarioPaypal(const UsuarioPaypal& usuario) {
