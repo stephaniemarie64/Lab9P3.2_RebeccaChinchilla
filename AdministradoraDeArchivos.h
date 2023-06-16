@@ -1,16 +1,28 @@
-#ifndef ADMINISTRADORA_ARCHIVOS_H
-#define ADMINISTRADORA_ARCHIVOS_H
+#ifndef ADMINISTRADORARCHIVOS_H
+#define ADMINISTRADORARCHIVOS_H
 
-#include <fstream>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include "UsuarioPaypal.h"
+#include "Wallet.h"
 
 class AdministradoraArchivos {
 public:
-    void guardarCuentasPaypal(const std::vector<UsuarioPaypal*>& cuentasPaypal);
-    std::vector<UsuarioPaypal*> cargarCuentasPaypal();
+    AdministradoraArchivos();
+
+    void guardarUsuarioPaypal(const UsuarioPaypal& usuario);
+    void guardarWallet(const Wallet& wallet);
+
+    UsuarioPaypal obtenerUsuarioPaypal(const std::string& email);
+    Wallet obtenerWallet(const std::string& email);
+
+private:
+    std::string rutaArchivoUsuarios;
+    std::string rutaArchivoWallets;
+
+    bool existeArchivo(const std::string& rutaArchivo);
 };
 
-#endif  // ADMINISTRADORA_ARCHIVOS_H
+#endif

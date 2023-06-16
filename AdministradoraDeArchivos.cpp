@@ -1,48 +1,69 @@
 #include "AdministradoraArchivos.h"
 
-void AdministradoraArchivos::guardarCuentasPaypal(const std::vector<UsuarioPaypal*>& cuentasPaypal) {
-    for (UsuarioPaypal* cuenta : cuentasPaypal) {
-        std::string nombreArchivo = cuenta->getIdentidad() + ".lab";
-        std::ofstream archivo(nombreArchivo, std::ios::binary | std::ios::out);
+AdministradoraArchivos::AdministradoraArchivos() {
+    rutaArchivoUsuarios = "usuarios.txt";
+    rutaArchivoWallets = "wallets.txt";
+}
 
-        if (archivo.is_open()) {
-            archivo.write(reinterpret_cast<const char*>(cuenta), sizeof(UsuarioPaypal));
-            archivo.close();
-            std::cout << "Cuenta guardada en archivo: " << nombreArchivo << std::endl;
-        }
-        else {
-            std::cout << "Error al guardar la cuenta en el archivo: " << nombreArchivo << std::endl;
-        }
+void AdministradoraArchivos::guardarUsuarioPaypal(const UsuarioPaypal& usuario) {
+    std::ofstream archivoUsuarios(rutaArchivoUsuarios, std::ios::app);
+    if (archivoUsuarios.is_open()) {
+        archivoUsuarios << usuario.getEmail() << "," << usuario.getContrasena() << std::endl;
+        archivoUsuarios.close();
+        std::cout << "Usuario de Paypal guardado correctamente." << std::endl;
+    }
+    else {
+        std::cout << "No se pudo abrir el archivo de usuarios." << std::endl;
     }
 }
 
-std::vector<UsuarioPaypal*> AdministradoraArchivos::cargarCuentasPaypal() {
-    std::vector<UsuarioPaypal*> cuentasPaypal;
-
-    std::ifstream archivo;
-    archivo.open(".", std::ios::binary | std::ios::in);
-
-    if (!archivo) {
-        std::cout << "No se encontraron archivos para cargar." << std::endl;
-        return cuentasPaypal;
+void AdministradoraArchivos::guardarWallet(const Wallet& wallet) {
+    std::ofstream archivoWallets(rutaArchivoWallets, std::ios::app);
+    if (archivoWallets.is_open()) {
+        archivoWallets << wallet.getEmail() << "," << wallet.getContrasena() << std::endl;
+        archivoWallets.close();
+        std::cout << "Wallet guardado correctamente." << std::endl;
     }
+    else {
+        std::cout << "No se pudo abrir el archivo de wallets." << std::endl;
+    }
+}
 
-    std::string extension = ".lab";
-    std::string nombreArchivo;
-    while (archivo.peek() != EOF) {
-        archivo >> nombreArchivo;
-
-        if (nombreArchivo.substr(nombreArchivo.size() - extension.size()) == extension) {
-            std::ifstream cuentaArchivo(nombreArchivo, std::ios::binary | std::ios::in);
-            if (cuentaArchivo.is_open()) {
-                UsuarioPaypal* cuenta = new UsuarioPaypal();
-                cuentaArchivo.read(reinterpret_cast<char*>(cuenta), sizeof(UsuarioPaypal));
-                cuentasPaypal.push_back(cuenta);
-                cuentaArchivo.close();
+UsuarioPaypal AdministradoraArchivos::obtenerUsuarioPaypal(const std::string& email) {
+    std::ifstream archivoUsuarios(rutaArchivoUsuarios);
+    std::string linea;
+    while (std::getline(archivoUsuarios, linea)) {
+        std::string correo, contrasena;
+        std::size_t pos = linea.find(',');
+        if (pos != std::string::npos) {
+            correo = linea.substr(0, pos);
+            contrasena = linea.substr(pos + 1);
+            if (correo == email) {
+                return UsuarioPaypal(correo, contrasena);
             }
         }
     }
+    return UsuarioPaypal("", "");
+}
 
-    archivo.close();
-    return cuentasPaypal;
+Wallet AdministradoraArchivos::obtenerWallet(const std::string& email) {
+    std::ifstream archivoWallets(rutaArchivoWallets);
+    std::string linea;
+    while (std::getline(archivoWallets, linea)) {
+        std::string correo, contrasena;
+        std::size_t pos = linea.find(',');
+        if (pos != std::string::npos) {
+            correo = linea.substr(0, pos);
+            contrasena = linea.substr(pos + 1);
+            if (correo == email) {
+                return Wallet(correo, contrasena);
+            }
+        }
+    }
+    return Wallet("", "");
+}
+
+bool AdministradoraArchivos::existeArchivo(const std::string& rutaArchivo) {
+    std::ifstream archivo(rutaArchivo);
+    return archivo.good();
 }

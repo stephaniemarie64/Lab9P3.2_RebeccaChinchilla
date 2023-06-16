@@ -1,26 +1,19 @@
-#ifndef USUARIO_PAYPAL_H
-#define USUARIO_PAYPAL_H
+#ifndef USUARIOPAYPAL_H
+#define USUARIOPAYPAL_H
 
 #include <string>
-#include <vector>
 
 class UsuarioPaypal {
-private:
-    std::string usuario;
-    std::string identidad;
-    std::string contrasena;
-    double saldo;
-    std::vector<std::string> historial;
-
 public:
-    UsuarioPaypal(const std::string& usuario, const std::string& identidad, const std::string& contrasena, double saldoInicial);
+    UsuarioPaypal();
+    UsuarioPaypal(const std::string& email, const std::string& contrasena);
 
-    std::string getUsuario() const;
-    double getSaldo() const;
+    std::string getEmail() const;
+    std::string getContrasena() const;
 
-    void depositar(double cantidad);
-    bool retirar(double cantidad);
-    void agregarTransaccion(const std::string& transaccion);
+private:
+    std::string email;
+    std::string contrasena;
 };
 
-#endif  // USUARIO_PAYPAL_H
+#endif

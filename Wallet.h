@@ -2,25 +2,18 @@
 #define WALLET_H
 
 #include <string>
-#include <vector>
-#include "UsuarioPaypal.h"
 
 class Wallet {
-private:
-    std::string usuario;
-    UsuarioPaypal* cuentaPaypal;
-    std::string contrasena;
-    std::vector<std::string> cryptos;
-
 public:
-    Wallet(const std::string& usuario, UsuarioPaypal* cuentaPaypal, const std::string& contrasena);
+    Wallet();
+    Wallet(const std::string& email, const std::string& contrasena);
 
-    std::string getUsuario() const;
-    UsuarioPaypal* getCuentaPaypal() const;
+    std::string getEmail() const;
+    std::string getContrasena() const;
 
-    void mostrarEstadoCuenta() const;
-    void comprarCrypto(const std::string& crypto);
-    void venderCrypto(const std::string& crypto);
+private:
+    std::string email;
+    std::string contrasena;
 };
 
-#endif  // WALLET_H
+#endif

@@ -1,163 +1,97 @@
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include "Paypal.h"
-#include "UsuarioPaypal.h"
-#include "AdministradoraDeArchivos.h"
+#include "AdministradoraArchivos.h"
 #include "Wallet.h"
+#include "Paypal.h
+#include "UsuarioPaypal.h"
 
-using namespace std;
-
-void mostrarMenuPaypal(Paypal* cuentaPaypal) {
+void mostrarMenuPrincipal(AdministradoraArchivos& administradora) {
     int opcion;
 
     do {
-        // Mostrar el menú de Paypal
-        cout << "-----Iniciar sesión-----" << endl;
-        cout << "Ingrese su Usuario: ";
-        string usuario;
-        cin >> usuario;
-        cout << "Ingrese su Contraseña: ";
-        string contrasena;
-        cin >> contrasena;
-        cout << "------Bienvenido!------" << endl;
-        cout << "1. Ver Estado de cuenta" << endl;
-        cout << "2. Hacer depósito a mi propia cuenta" << endl;
-        cout << "3. Hacer retiro de mi cuenta" << endl;
-        cout << "4. Ver historial de cuenta" << endl;
-        cout << "5. Salir" << endl;
-        cout << "Selecciona una opción: ";
-        cin >> opcion;
-        cout << endl;
-
-        // Realizar acciones según la opción seleccionada
-        switch (opcion) {
-        case 1:
-            cuentaPaypal->verEstadoCuenta(usuario); // Llamar a verEstadoCuenta con el argumento usuario
-            break;
-        case 2:
-            cuentaPaypal->hacerDeposito(usuario); // Llamar a hacerDeposito con el argumento usuario
-            break;
-        case 3:
-            cuentaPaypal->hacerRetiro(usuario); // Llamar a hacerRetiro con el argumento usuario
-            break;
-        case 4:
-            cuentaPaypal->verHistorial(usuario); // Llamar a verHistorial con el argumento usuario
-            break;
-        case 5:
-            cout << "Cerrando sesión de Paypal..." << endl;
-            break;
-        default:
-            cout << "Opción inválida. Intenta de nuevo." << endl;
-        }
-
-        cout << endl;
-
-    } while (opcion != 5);
-}
-
-void mostrarMenuWallet(Wallet* wallet) {
-    int opcion;
-
-    do {
-        // Mostrar el menú de Wallet
-        cout << "-----Iniciar sesión Wallet-----" << endl;
-        cout << "Ingrese su Usuario: ";
-        string usuario;
-        cin >> usuario;
-        cout << "Ingrese su Contraseña: ";
-        string contrasena;
-        cin >> contrasena;
-        cout << "----Bienvenido!----" << endl;
-        cout << "1. Ver Estado de cuenta" << endl;
-        cout << "2. Comprar Cryptos" << endl;
-        cout << "3. Vender Cryptos" << endl;
-        cout << "4. Salir" << endl;
-        cout << "Selecciona una opción: ";
-        cin >> opcion;
-        cout << endl;
-
-        // Realizar acciones según la opción seleccionada
-        switch (opcion) {
-        case 1:
-            wallet->mostrarEstadoCuenta(usuario); // Llamar a mostrarEstadoCuenta con el argumento usuario
-            break;
-        case 2:
-            wallet->comprarCrypto(usuario); // Llamar a comprarCrypto con el argumento usuario
-            break;
-        case 3:
-            wallet->venderCrypto(usuario); // Llamar a venderCrypto con el argumento usuario
-            break;
-        case 4:
-            cout << "Cerrando sesión de Wallet..." << endl;
-            break;
-        default:
-            cout << "Opción inválida. Intenta de nuevo." << endl;
-        }
-
-        cout << endl;
-
-    } while (opcion != 4);
-}
-
-int main() {
-    int opcion;
-
-    do {
-        // Mostrar el menú principal
-        cout << "-----Bienvenido al sistema de pagos-----" << endl;
-        cout << "1. Crear cuenta Paypal" << endl;
-        cout << "2. Crear cuenta Wallet" << endl;
-        cout << "3. Salir" << endl;
-        cout << "Selecciona una opción: ";
-        cin >> opcion;
-        cout << endl;
+        std::cout << "Menú principal:" << std::endl;
+        std::cout << "1. Crear cuenta de PayPal" << std::endl;
+        std::cout << "2. Crear Wallet" << std::endl;
+        std::cout << "3. Cargar información" << std::endl;
+        std::cout << "4. Acceder a PayPal" << std::endl;
+        std::cout << "5. Acceder a Wallet" << std::endl;
+        std::cout << "6. Salir" << std::endl;
+        std::cout << "Ingrese una opción: ";
+        std::cin >> opcion;
 
         switch (opcion) {
         case 1: {
-            string usuario, contrasena;
-            cout << "Ingrese un nombre de usuario: ";
-            cin >> usuario;
-            cout << "Ingrese una contraseña: ";
-            cin >> contrasena;
+            std::string email, contrasena;
+            std::cout << "Ingrese su email: ";
+            std::cin >> email;
+            std::cout << "Ingrese su contraseña: ";
+            std::cin >> contrasena;
 
-            Paypal* cuentaPaypal = new Paypal(usuario, contrasena);
-            AdministradoraDeArchivos::guardarPaypal(*cuentaPaypal);
-
-            cout << "Cuenta Paypal creada exitosamente." << endl;
-
-            mostrarMenuPaypal(cuentaPaypal);
-
-            delete cuentaPaypal;
+            UsuarioPaypal usuario(email, contrasena);
+            administradora.guardarUsuarioPaypal(usuario);
+            std::cout << "Cuenta de PayPal creada exitosamente." << std::endl;
             break;
         }
         case 2: {
-            string usuario, contrasena;
-            cout << "Ingrese un nombre de usuario: ";
-            cin >> usuario;
-            cout << "Ingrese una contraseña: ";
-            cin >> contrasena;
+            std::string email, contrasena;
+            std::cout << "Ingrese su email: ";
+            std::cin >> email;
+            std::cout << "Ingrese su contraseña: ";
+            std::cin >> contrasena;
 
-            Wallet* wallet = new Wallet(usuario, contrasena);
-            AdministradoraDeArchivos::guardarWallet(*wallet);
-
-            cout << "Cuenta Wallet creada exitosamente." << endl;
-
-            mostrarMenuWallet(wallet);
-
-            delete wallet;
+            Wallet wallet(email, contrasena);
+            administradora.guardarWallet(wallet);
+            std::cout << "Wallet creado exitosamente." << std::endl;
             break;
         }
-        case 3:
-            cout << "Saliendo del sistema de pagos..." << endl;
+        case 3: {
+            std::cout << "Ingrese su email: ";
+            std::string email;
+            std::cin >> email;
+
+            UsuarioPaypal usuario = administradora.obtenerUsuarioPaypal(email);
+            if (usuario.getEmail() != "") {
+                std::cout << "Información de PayPal:" << std::endl;
+                std::cout << "Email: " << usuario.getEmail() << std::endl;
+                std::cout << "Contraseña: " << usuario.getContrasena() << std::endl;
+            }
+            else {
+                std::cout << "No se encontró información de PayPal para el email ingresado." << std::endl;
+            }
+
+            Wallet wallet = administradora.obtenerWallet(email);
+            if (wallet.getEmail() != "") {
+                std::cout << "Información de Wallet:" << std::endl;
+                std::cout << "Email: " << wallet.getEmail() << std::endl;
+                std::cout << "Contraseña: " << wallet.getContrasena() << std::endl;
+            }
+            else {
+                std::cout << "No se encontró información de Wallet para el email ingresado." << std::endl;
+            }
+            break;
+        }
+        case 4:
+            // Acceder a PayPal
+            std::cout << "Acceder a PayPal" << std::endl;
+            break;
+        case 5:
+            // Acceder a Wallet
+            std::cout << "Acceder a Wallet" << std::endl;
+            break;
+        case 6:
+            std::cout << "¡Hasta luego!" << std::endl;
             break;
         default:
-            cout << "Opción inválida. Intenta de nuevo." << endl;
+            std::cout << "Opción inválida. Intente nuevamente." << std::endl;
+            break;
         }
+        std::cout << std::endl;
+    } while (opcion != 6);
+}
 
-        cout << endl;
+int main() {
+    AdministradoraArchivos administradora;
 
-    } while (opcion != 3);
+    mostrarMenuPrincipal(administradora);
 
     return 0;
 }
