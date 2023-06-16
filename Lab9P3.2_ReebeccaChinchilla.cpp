@@ -1,8 +1,7 @@
 #include <iostream>
 #include "AdministradoraArchivos.h"
-#include "Wallet.h"
-#include "Paypal.h
 #include "UsuarioPaypal.h"
+#include "Wallet.h"
 
 void mostrarMenuPrincipal(AdministradoraArchivos& administradora) {
     int opcion;
@@ -28,7 +27,7 @@ void mostrarMenuPrincipal(AdministradoraArchivos& administradora) {
 
             UsuarioPaypal usuario(email, contrasena);
             administradora.guardarUsuarioPaypal(usuario);
-            std::cout << "Cuenta de PayPal creada exitosamente." << std::endl;
+            std::cout << "Cuenta de PayPal creada exitosamente." << std::endl ;
             break;
         }
         case 2: {
@@ -69,21 +68,21 @@ void mostrarMenuPrincipal(AdministradoraArchivos& administradora) {
             }
             break;
         }
-        case 4:
-            // Acceder a PayPal
+        
+        case 4: {
             std::cout << "Acceder a PayPal" << std::endl;
-            break;
-        case 5:
-            // Acceder a Wallet
+            break; }
+        case 5: {
             std::cout << "Acceder a Wallet" << std::endl;
-            break;
-        case 6:
+            break; }
+        case 6: {
             std::cout << "¡Hasta luego!" << std::endl;
-            break;
+            break; }
         default:
             std::cout << "Opción inválida. Intente nuevamente." << std::endl;
             break;
         }
+
         std::cout << std::endl;
     } while (opcion != 6);
 }
