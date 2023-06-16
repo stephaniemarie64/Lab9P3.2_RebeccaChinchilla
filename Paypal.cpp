@@ -1,28 +1,42 @@
 #include "Paypal.h"
-#include "UsuarioPaypal.h"
-#include <iostream>
 
-Paypal::Paypal(const std::string& username) : username(username) {}
+void Paypal::crearCuentaPaypal() {
+    std::string usuario, identidad, contrasena;
+    double saldoInicial;
+    bool usuarioUnico = false;
 
-void Paypal::hacerDeposito(double amount, const std::string& descripcion) {
-    std::cout << "Se ha depositado $" << amount << " en tu cuenta de Paypal." << std::endl;
-    // Realizar la lógica para hacer el depósito en la cuenta de Paypal
+    do {
+        std::cout << "Ingrese el nombre de usuario: ";
+        std::cin >> usuario;
+
+        // Verificar si el usuario ya existe
+        if (buscarCuentaPorUsuario(usuario) == nullptr) {
+            usuarioUnico = true;
+        }
+        else {
+            std::cout << "El nombre de usuario ya está en uso. Intente con otro." << std::endl;
+        }
+    } while (!usuarioUnico);
+
+    std::cout << "Ingrese el número de identidad: ";
+    std::cin >> identidad;
+
+    std::cout << "Ingrese la contraseña: ";
+    std::cin >> contrasena;
+
+    std::cout << "Ingrese el saldo inicial: ";
+    std::cin >> saldoInicial;
+
+    UsuarioPaypal* nuevaCuenta = new UsuarioPaypal(usuario, identidad, contrasena, saldoInicial);
+    cuentasPaypal.push_back(nuevaCuenta);
+
+    std::cout << "Cuenta de Paypal creada exitosamente." << std::endl;
 }
 
-void Paypal::hacerRetiro(double amount, const std::string& descripcion) {
-    std::cout << "Se ha retirado $" << amount << " de tu cuenta de Paypal." << std::endl;
-    // Realizar la lógica para hacer el retiro de la cuenta de Paypal
-}
-
-double Paypal::getSaldo() const {
-    // Obtener el saldo actual de la cuenta de Paypal
-    return 0.0;
-}
-
-UsuarioPaypal* Paypal::buscarUsuario(const std::string& username) {
-    for (UsuarioPaypal* usuario : usuarios) {
-        if (usuario->getUsername() == username) {
-            return usuario;
+UsuarioPaypal* Paypal::buscarCuentaPorUsuario(const std::string& usuario) const {
+    for (UsuarioPaypal* cuenta : cuentasPaypal) {
+        if (cuenta->getUsuario() == usuario) {
+            return cuenta;
         }
     }
     return nullptr;

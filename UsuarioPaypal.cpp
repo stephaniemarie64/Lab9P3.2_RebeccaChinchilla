@@ -1,55 +1,34 @@
 #include "UsuarioPaypal.h"
-#include <iostream>
 
-UsuarioPaypal::UsuarioPaypal(const std::string& username, const std::string& id, const std::string& password, double saldo)
-    : username(username), id(id), password(password), saldo(saldo) {}
+UsuarioPaypal::UsuarioPaypal(const std::string& usuario, const std::string& identidad, const std::string& contrasena, double saldoInicial)
+    : usuario(usuario), identidad(identidad), contrasena(contrasena), saldo(saldoInicial) {}
 
-std::string UsuarioPaypal::getUsername() const {
-    return username;
-}
-
-std::string UsuarioPaypal::getId() const {
-    return id;
-}
-
-std::string UsuarioPaypal::getPassword() const {
-    return password;
+std::string UsuarioPaypal::getUsuario() const {
+    return usuario;
 }
 
 double UsuarioPaypal::getSaldo() const {
     return saldo;
 }
 
-void UsuarioPaypal::hacerDeposito(double amount, const std::string& descripcion) {
-    saldo += amount;
-    std::cout << "Se ha realizado un depósito de $" << amount << " en tu cuenta." << std::endl;
-    historialCuenta.push_back(descripcion);
-    // Realizar la lógica para guardar el depósito en el historial de la cuenta
+void UsuarioPaypal::depositar(double cantidad) {
+    saldo += cantidad;
+    std::cout << "Se ha depositado $" << cantidad << " a su cuenta. Nuevo saldo: $" << saldo << std::endl;
+    agregarTransaccion("Se ha depositado $" + std::to_string(cantidad) + " en su cuenta.");
 }
 
-void UsuarioPaypal::hacerRetiro(double amount, const std::string& descripcion) {
-    if (saldo >= amount) {
-        saldo -= amount;
-        std::cout << "Se ha realizado un retiro de $" << amount << " de tu cuenta." << std::endl;
-        historialCuenta.push_back(descripcion);
-        // Realizar la lógica para guardar el retiro en el historial de la cuenta
+bool UsuarioPaypal::retirar(double cantidad) {
+    if (cantidad > saldo) {
+        std::cout << "Saldo insuficiente." << std::endl;
+        return false;
     }
-    else {
-        std::cout << "Saldo insuficiente en tu cuenta." << std::endl;
-    }
+
+    saldo -= cantidad;
+    std::cout << "Se ha retirado $" << cantidad << " de su cuenta. Nuevo saldo: $" << saldo << std::endl;
+    agregarTransaccion("Se ha retirado $" + std::to_string(cantidad) + " de su cuenta.");
+    return true;
 }
 
-void UsuarioPaypal::mostrarHistorialCuenta() const {
-    std::cout << "Historial de cuenta de " << username << ":" << std::endl;
-    for (const std::string& transaccion : historialCuenta) {
-        std::cout << transaccion << std::endl;
-    }
-}
-
-void UsuarioPaypal::guardarEnArchivo() const {
-    // Guardar los datos del usuario en un archivo
-}
-
-void UsuarioPaypal::cargarDesdeArchivo() {
-    // Cargar los datos del usuario desde un archivo
+void UsuarioPaypal::agregarTransaccion(const std::string& transaccion) {
+    historial.push_back(transaccion);
 }

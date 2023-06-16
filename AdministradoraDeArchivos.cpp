@@ -1,32 +1,48 @@
-#include "AdministradoraDeArchivos.h"
-#include <iostream>
-#include <fstream>
+#include "AdministradoraArchivos.h"
 
-const std::string AdministradoraDeArchivos::nombreArchivo = "cuentas_paypal.bin";
+void AdministradoraArchivos::guardarCuentasPaypal(const std::vector<UsuarioPaypal*>& cuentasPaypal) {
+    for (UsuarioPaypal* cuenta : cuentasPaypal) {
+        std::string nombreArchivo = cuenta->getIdentidad() + ".lab";
+        std::ofstream archivo(nombreArchivo, std::ios::binary | std::ios::out);
 
-void AdministradoraDeArchivos::guardarCuentaPaypal(const Paypal& cuentaPaypal) {
-    std::ofstream archivo(nombreArchivo, std::ios::binary | std::ios::out);
-    if (archivo.is_open()) {
-        archivo.write(reinterpret_cast<const char*>(&cuentaPaypal), sizeof(cuentaPaypal));
-        archivo.close();
-        std::cout << "Cuenta de Paypal guardada exitosamente." << std::endl;
-    }
-    else {
-        std::cerr << "Error al abrir el archivo para guardar la cuenta de Paypal." << std::endl;
+        if (archivo.is_open()) {
+            archivo.write(reinterpret_cast<const char*>(cuenta), sizeof(UsuarioPaypal));
+            archivo.close();
+            std::cout << "Cuenta guardada en archivo: " << nombreArchivo << std::endl;
+        }
+        else {
+            std::cout << "Error al guardar la cuenta en el archivo: " << nombreArchivo << std::endl;
+        }
     }
 }
 
-Paypal* AdministradoraDeArchivos::cargarCuentaPaypal() {
-    std::ifstream archivo(nombreArchivo, std::ios::binary | std::ios::in);
-    if (archivo.is_open()) {
-        Paypal* cuentaPaypal = new Paypal("");
-        archivo.read(reinterpret_cast<char*>(cuentaPaypal), sizeof(*cuentaPaypal));
-        archivo.close();
-        std::cout << "Cuenta de Paypal cargada exitosamente." << std::endl;
-        return cuentaPaypal;
+std::vector<UsuarioPaypal*> AdministradoraArchivos::cargarCuentasPaypal() {
+    std::vector<UsuarioPaypal*> cuentasPaypal;
+
+    std::ifstream archivo;
+    archivo.open(".", std::ios::binary | std::ios::in);
+
+    if (!archivo) {
+        std::cout << "No se encontraron archivos para cargar." << std::endl;
+        return cuentasPaypal;
     }
-    else {
-        std::cerr << "Error al abrir el archivo para cargar la cuenta de Paypal." << std::endl;
-        return nullptr;
+
+    std::string extension = ".lab";
+    std::string nombreArchivo;
+    while (archivo.peek() != EOF) {
+        archivo >> nombreArchivo;
+
+        if (nombreArchivo.substr(nombreArchivo.size() - extension.size()) == extension) {
+            std::ifstream cuentaArchivo(nombreArchivo, std::ios::binary | std::ios::in);
+            if (cuentaArchivo.is_open()) {
+                UsuarioPaypal* cuenta = new UsuarioPaypal();
+                cuentaArchivo.read(reinterpret_cast<char*>(cuenta), sizeof(UsuarioPaypal));
+                cuentasPaypal.push_back(cuenta);
+                cuentaArchivo.close();
+            }
+        }
     }
+
+    archivo.close();
+    return cuentasPaypal;
 }

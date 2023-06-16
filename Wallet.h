@@ -1,27 +1,25 @@
 #ifndef WALLET_H
 #define WALLET_H
 
+#include <iostream>
+#include <vector>
 #include <string>
-
-class Paypal;
+#include "Paypal.h"
 
 class Wallet {
-public:
-    Wallet(const std::string& username, const std::string& paypalUsername, const std::string& password);
-    void mostrarEstadoCuenta();
-    void comprarCrypto(const std::string& crypto, double amount);
-    void venderCrypto(const std::string& crypto, double amount);
-    void iniciarSesion();
-
 private:
-    std::string username;
-    Paypal* paypal;
-    std::string password;
-    double dogeCoinBalance;
-    double etheriumBalance;
-    double walterCoinBalance;
+    std::string usuario;
+    Paypal* cuentaPaypal;
+    std::string contrasena;
 
-    bool verificarSaldo(double amount);
+public:
+    Wallet(const std::string& usuario, Paypal* cuentaPaypal);
+
+    void iniciarSesion();
+    void mostrarEstadoCuenta();
+    void comprarCryptos();
+    void venderCryptos();
+    void mostrarMenu();
 };
 
-#endif
+#endif  // WALLET_H

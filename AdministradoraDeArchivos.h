@@ -1,15 +1,16 @@
-#ifndef ADMINISTRADORADEARCHIVOS_H
-#define ADMINISTRADORADEARCHIVOS_H
+#ifndef ADMINISTRADORA_ARCHIVOS_H
+#define ADMINISTRADORA_ARCHIVOS_H
 
-#include "Paypal.h"
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
+#include "UsuarioPaypal.h"
 
-class AdministradoraDeArchivos {
+class AdministradoraArchivos {
 public:
-    static void guardarCuentaPaypal(const Paypal& cuentaPaypal);
-    static Paypal* cargarCuentaPaypal();
-
-private:
-    static const std::string nombreArchivo;
+    void guardarCuentasPaypal(const std::vector<UsuarioPaypal*>& cuentasPaypal);
+    std::vector<UsuarioPaypal*> cargarCuentasPaypal();
 };
 
-#endif
+#endif  // ADMINISTRADORA_ARCHIVOS_H

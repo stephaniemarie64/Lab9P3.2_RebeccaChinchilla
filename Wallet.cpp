@@ -1,106 +1,111 @@
 #include "Wallet.h"
-#include "Paypal.h"
 #include <iostream>
+#include <fstream>
 
-Wallet::Wallet(const std::string& username, const std::string& paypalUsername, const std::string& password)
-    : username(username), paypal(nullptr), password(password), dogeCoinBalance(0.0),
-    etheriumBalance(0.0), walterCoinBalance(0.0) {
-    paypal = new Paypal(paypalUsername);
-}
+Wallet::Wallet(const std::string& username, const std::string& paypalUsername, Paypal* paypal)
+    : username(username), paypalUsername(paypalUsername), paypal(paypal), balance(0.0) {}
 
-void Wallet::mostrarEstadoCuenta() {
-    std::cout << "Estado de cuenta de " << username << ":" << std::endl;
-    std::cout << "Doge Coin: " << dogeCoinBalance << std::endl;
-    std::cout << "Etherium: " << etheriumBalance << std::endl;
-    std::cout << "WalterCoin: " << walterCoinBalance << std::endl;
-}
+Wallet::~Wallet() {}
 
-void Wallet::comprarCrypto(const std::string& crypto, double amount) {
-    if (paypal == nullptr) {
-        std::cout << "No se puede realizar la transacción. Cuenta de Paypal no configurada." << std::endl;
-        return;
-    }
+void Wallet::login() {
+    std::string enteredUsername, enteredPassword;
+    std::cout << "----- Iniciar sesión Wallet -----\n";
+    std::cout << "Ingrese su Usuario: ";
+    std::cin >> enteredUsername;
+    std::cout << "Ingrese su Contraseña: ";
+    std::cin >> enteredPassword;
 
-    double totalAmount = 0.0;
-    if (crypto == "DogeCoin") {
-        totalAmount = amount * 0.6;
-        if (verificarSaldo(totalAmount)) {
-            dogeCoinBalance += amount;
-            paypal->hacerRetiro(totalAmount, "Compra de DogeCoin desde Wallet");
-        }
-    }
-    else if (crypto == "Etherium") {
-        totalAmount = amount * 1000;
-        if (verificarSaldo(totalAmount)) {
-            etheriumBalance += amount;
-            paypal->hacerRetiro(totalAmount, "Compra de Etherium desde Wallet");
-        }
-    }
-    else if (crypto == "WalterCoin") {
-        totalAmount = amount * 5;
-        if (verificarSaldo(totalAmount)) {
-            walterCoinBalance += amount;
-            paypal->hacerRetiro(totalAmount, "Compra de WalterCoin desde Wallet");
-        }
+    if (enteredUsername == username && enteredPassword == password) {
+        std::cout << "---- Bienvenido! ----\n";
+        showMainMenu();
     }
     else {
-        std::cout << "La criptomoneda especificada no es válida." << std::endl;
+        std::cout << "Credenciales inválidas. Saliendo del programa...\n";
     }
 }
 
-void Wallet::venderCrypto(const std::string& crypto, double amount) {
-    if (paypal == nullptr) {
-        std::cout << "No se puede realizar la transacción. Cuenta de Paypal no configurada." << std::endl;
-        return;
-    }
+void Wallet::showMainMenu() {
+    int opcion;
+    do {
+        std::cout << "1. Ver Estado de cuenta\n";
+        std::cout << "2. Comprar Cryptos\n";
+        std::cout << "3. Vender Cryptos\n";
+        std::cout << "4. Salir\n";
+        std::cout << "Ingrese su opción: ";
+        std::cin >> opcion;
 
-    double totalAmount = 0.0;
-    if (crypto == "DogeCoin") {
-        if (amount <= dogeCoinBalance) {
-            totalAmount = amount * 0.6;
-            dogeCoinBalance -= amount;
-            paypal->hacerDeposito(totalAmount, "Venta de DogeCoin desde Wallet");
+        switch (opcion) {
+        case 1:
+            showAccountInfo();
+            break;
+        case 2:
+            buyCryptos();
+            break;
+        case 3:
+            sellCryptos();
+            break;
+        case 4:
+            saveWallet();
+            std::cout << "Saliendo del programa...\n";
+            break;
+        default:
+            std::cout << "Opción inválida. Intente nuevamente.\n";
+            break;
         }
-        else {
-            std::cout << "No tienes suficiente DogeCoin para vender." << std::endl;
-        }
-    }
-    else if (crypto == "Etherium") {
-        if (amount <= etheriumBalance) {
-            totalAmount = amount * 1000;
-            etheriumBalance -= amount;
-            paypal->hacerDeposito(totalAmount, "Venta de Etherium desde Wallet");
-        }
-        else {
-            std::cout << "No tienes suficiente Etherium para vender." << std::endl;
-        }
-    }
-    else if (crypto == "WalterCoin") {
-        if (amount <= walterCoinBalance) {
-            totalAmount = amount * 5;
-            walterCoinBalance -= amount;
-            paypal->hacerDeposito(totalAmount, "Venta de WalterCoin desde Wallet");
-        }
-        else {
-            std::cout << "No tienes suficiente WalterCoin para vender." << std::endl;
-        }
+    } while (opcion != 4);
+}
+
+bool Wallet::validatePassword(const std::string& password) {
+    // Validar que la contraseña cumple con los requisitos (alfanumérica, mínimo 8 caracteres, carácter especial)
+    // Retorna true si la contraseña es válida, false en caso contrario
+    // Implementa la lógica necesaria
+}
+
+void Wallet::deposit(double amount) {
+    balance += amount;
+    std::string transaction = "Se ha depositado " + std::to_string(amount) + " desde su wallet";
+    transactionHistory.push_back(transaction);
+    std::cout << "Se ha depositado " << amount << " dólares. Nuevo saldo: " << balance << " dólares\n";
+}
+
+void Wallet::withdraw(double amount) {
+    if (balance >= amount) {
+        balance -= amount;
+        std::string transaction = "Se ha retirado " + std::to_string(amount) + " desde su wallet";
+        transactionHistory.push_back(transaction);
+        std::cout << "Se ha retirado " << amount << " dólares. Nuevo saldo: " << balance << " dólares\n";
     }
     else {
-        std::cout << "La criptomoneda especificada no es válida." << std::endl;
+        std::cout << "Saldo insuficiente\n";
     }
 }
 
-void Wallet::iniciarSesion() {
-    std::cout << "Iniciar sesión en Wallet" << std::endl;
-    // Realizar la lógica para iniciar sesión en Wallet
+void Wallet::showAccountInfo() {
+    std::cout << "Usuario: " << username << "\n";
+    std::cout << "Saldo: " << balance << " dólares\n";
+    std::cout << "Historial de cuenta:\n";
+    for (const auto& transaction : transactionHistory) {
+        std::cout << "- " << transaction << "\n";
+    }
 }
 
-bool Wallet::verificarSaldo(double amount) {
-    if (paypal != nullptr && amount <= paypal->getSaldo()) {
-        return true;
+void Wallet::buyCryptos() {
+    // Implementa la lógica para comprar cryptos
+}
+
+void Wallet::sellCryptos() {
+    // Implementa la lógica para vender cryptos
+}
+
+void Wallet::saveWallet() {
+    std::string filename = username + ".lab";
+    std::ofstream file(filename, std::ios::binary);
+    if (file.is_open()) {
+        file.write(reinterpret_cast<char*>(this), sizeof(Wallet));
+        file.close();
+        std::cout << "La billetera se ha guardado correctamente en el archivo " << filename << "\n";
     }
     else {
-        std::cout << "Saldo insuficiente en tu cuenta de Paypal." << std::endl;
-        return false;
+        std::cout << "No se pudo guardar la billetera en el archivo " << filename << "\n";
     }
 }
