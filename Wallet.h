@@ -2,11 +2,17 @@
 #define WALLET_H
 
 #include <string>
-#include <vector>
 
-class Paypal;  
+class Paypal;
 
 class Wallet {
+public:
+    Wallet(const std::string& username, const std::string& paypalUsername, const std::string& password);
+    void mostrarEstadoCuenta();
+    void comprarCrypto(const std::string& crypto, double amount);
+    void venderCrypto(const std::string& crypto, double amount);
+    void iniciarSesion();
+
 private:
     std::string username;
     Paypal* paypal;
@@ -14,13 +20,8 @@ private:
     double dogeCoinBalance;
     double etheriumBalance;
     double walterCoinBalance;
+
     bool verificarSaldo(double amount);
-public:
-    Wallet(const std::string& username, const std::string& paypalUsername, const std::string& password);
-    void mostrarEstadoCuenta();
-    void comprarCrypto(const std::string& crypto, double amount);
-    void venderCrypto(const std::string& crypto, double amount);
-    void iniciarSesion();
 };
 
 #endif

@@ -91,71 +91,16 @@ void Wallet::venderCrypto(const std::string& crypto, double amount) {
 }
 
 void Wallet::iniciarSesion() {
-    std::cout << "----- Iniciar sesión Wallet -----" << std::endl;
-    std::string inputUsername, inputPassword;
-    std::cout << "Ingrese su Usuario: ";
-    std::cin >> inputUsername;
-    std::cout << "Ingrese su Contraseña: ";
-    std::cin >> inputPassword;
-    std::cout << "---- Bienvenido! ---" << std::endl;
-
-    if (inputUsername == username && inputPassword == password) {
-        int opcion;
-        do {
-            std::cout << "1. Ver Estado de cuenta" << std::endl;
-            std::cout << "2. Comprar Cryptos" << std::endl;
-            std::cout << "3. Vender Cryptos" << std::endl;
-            std::cout << "4. Salir" << std::endl;
-            std::cout << "Selecciona una opción: ";
-            std::cin >> opcion;
-            std::cout << std::endl;
-
-            switch (opcion) {
-            case 1:
-                mostrarEstadoCuenta();
-                break;
-            case 2: {
-                std::string crypto;
-                double amount;
-                std::cout << "Ingrese el nombre de la criptomoneda: ";
-                std::cin >> crypto;
-                std::cout << "Ingrese la cantidad a comprar: ";
-                std::cin >> amount;
-                comprarCrypto(crypto, amount);
-                break;
-            }
-            case 3: {
-                std::string crypto;
-                double amount;
-                std::cout << "Ingrese el nombre de la criptomoneda: ";
-                std::cin >> crypto;
-                std::cout << "Ingrese la cantidad a vender: ";
-                std::cin >> amount;
-                venderCrypto(crypto, amount);
-                break;
-            }
-            case 4:
-                std::cout << "Saliendo del programa..." << std::endl;
-                break;
-            default:
-                std::cout << "Opción inválida. Intenta de nuevo." << std::endl;
-            }
-
-            std::cout << std::endl;
-
-        } while (opcion != 4);
-    }
-    else {
-        std::cout << "Usuario o contraseña incorrectos." << std::endl;
-    }
+    std::cout << "Iniciar sesión en Wallet" << std::endl;
+    // Realizar la lógica para iniciar sesión en Wallet
 }
 
 bool Wallet::verificarSaldo(double amount) {
-    if (paypal->getSaldo() >= amount) {
+    if (paypal != nullptr && amount <= paypal->getSaldo()) {
         return true;
     }
     else {
-        std::cout << "Saldo insuficiente en la cuenta de Paypal." << std::endl;
+        std::cout << "Saldo insuficiente en tu cuenta de Paypal." << std::endl;
         return false;
     }
 }

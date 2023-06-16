@@ -2,7 +2,6 @@
 #define ADMINISTRADORADEARCHIVOS_H
 
 #include "Paypal.h"
-#include <fstream>
 
 class AdministradoraDeArchivos {
 public:

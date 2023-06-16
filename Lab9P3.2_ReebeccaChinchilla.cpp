@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <vector>
 #include "Paypal.h"
 #include "UsuarioPaypal.h"
 #include "AdministradoraDeArchivos.h"
@@ -31,16 +33,16 @@ void mostrarMenuPaypal(Paypal* cuentaPaypal) {
         // Realizar acciones según la opción seleccionada
         switch (opcion) {
         case 1:
-            cuentaPaypal->verEstadoCuenta();
+            cuentaPaypal->verEstadoCuenta(usuario); // Llamar a verEstadoCuenta con el argumento usuario
             break;
         case 2:
-            cuentaPaypal->hacerDeposito();
+            cuentaPaypal->hacerDeposito(usuario); // Llamar a hacerDeposito con el argumento usuario
             break;
         case 3:
-            cuentaPaypal->hacerRetiro();
+            cuentaPaypal->hacerRetiro(usuario); // Llamar a hacerRetiro con el argumento usuario
             break;
         case 4:
-            cuentaPaypal->verHistorial();
+            cuentaPaypal->verHistorial(usuario); // Llamar a verHistorial con el argumento usuario
             break;
         case 5:
             cout << "Cerrando sesión de Paypal..." << endl;
@@ -78,13 +80,13 @@ void mostrarMenuWallet(Wallet* wallet) {
         // Realizar acciones según la opción seleccionada
         switch (opcion) {
         case 1:
-            wallet->verEstadoCuenta();
+            wallet->mostrarEstadoCuenta(usuario); // Llamar a mostrarEstadoCuenta con el argumento usuario
             break;
         case 2:
-            wallet->comprarCryptos();
+            wallet->comprarCrypto(usuario); // Llamar a comprarCrypto con el argumento usuario
             break;
         case 3:
-            wallet->venderCryptos();
+            wallet->venderCrypto(usuario); // Llamar a venderCrypto con el argumento usuario
             break;
         case 4:
             cout << "Cerrando sesión de Wallet..." << endl;
@@ -98,73 +100,56 @@ void mostrarMenuWallet(Wallet* wallet) {
     } while (opcion != 4);
 }
 
-void mostrarMenu() {
-    AdministradoraDeArchivos administradora;
-
+int main() {
     int opcion;
 
     do {
         // Mostrar el menú principal
-        cout << "-----Menu principal-----" << endl;
-        cout << "1. Crear cuenta de Paypal" << endl;
-        cout << "2. Crear cuenta de Wallet" << endl;
-        cout << "3. Acceder a Paypal" << endl;
-        cout << "4. Acceder a Wallet" << endl;
-        cout << "5. Salir" << endl;
+        cout << "-----Bienvenido al sistema de pagos-----" << endl;
+        cout << "1. Crear cuenta Paypal" << endl;
+        cout << "2. Crear cuenta Wallet" << endl;
+        cout << "3. Salir" << endl;
         cout << "Selecciona una opción: ";
         cin >> opcion;
         cout << endl;
 
-        // Realizar acciones según la opción seleccionada
         switch (opcion) {
         case 1: {
             string usuario, contrasena;
-            cout << "Ingrese un nombre de usuario para Paypal: ";
+            cout << "Ingrese un nombre de usuario: ";
             cin >> usuario;
-            cout << "Ingrese una contraseña para Paypal: ";
+            cout << "Ingrese una contraseña: ";
             cin >> contrasena;
 
-            Paypal nuevaCuenta(usuario, contrasena);
-            administradora.guardarCuentaPaypal(nuevaCuenta);
-            cout << "Cuenta de Paypal creada exitosamente." << endl;
+            Paypal* cuentaPaypal = new Paypal(usuario, contrasena);
+            AdministradoraDeArchivos::guardarPaypal(*cuentaPaypal);
+
+            cout << "Cuenta Paypal creada exitosamente." << endl;
+
+            mostrarMenuPaypal(cuentaPaypal);
+
+            delete cuentaPaypal;
             break;
         }
         case 2: {
             string usuario, contrasena;
-            cout << "Ingrese un nombre de usuario para Wallet: ";
+            cout << "Ingrese un nombre de usuario: ";
             cin >> usuario;
-            cout << "Ingrese una contraseña para Wallet: ";
+            cout << "Ingrese una contraseña: ";
             cin >> contrasena;
 
-            Wallet nuevoWallet(usuario, contrasena);
-            administradora.guardarWallet(nuevoWallet);
-            cout << "Cuenta de Wallet creada exitosamente." << endl;
+            Wallet* wallet = new Wallet(usuario, contrasena);
+            AdministradoraDeArchivos::guardarWallet(*wallet);
+
+            cout << "Cuenta Wallet creada exitosamente." << endl;
+
+            mostrarMenuWallet(wallet);
+
+            delete wallet;
             break;
         }
-        case 3: {
-            Paypal* cuentaPaypal = administradora.cargarCuentaPaypal();
-            if (cuentaPaypal != nullptr) {
-                mostrarMenuPaypal(cuentaPaypal);
-                delete cuentaPaypal;
-            }
-            else {
-                cout << "No se pudo cargar la cuenta de Paypal." << endl;
-            }
-            break;
-        }
-        case 4: {
-            Wallet* wallet = administradora.cargarWallet();
-            if (wallet != nullptr) {
-                mostrarMenuWallet(wallet);
-                delete wallet;
-            }
-            else {
-                cout << "No se pudo cargar la cuenta de Wallet." << endl;
-            }
-            break;
-        }
-        case 5:
-            cout << "Saliendo del programa..." << endl;
+        case 3:
+            cout << "Saliendo del sistema de pagos..." << endl;
             break;
         default:
             cout << "Opción inválida. Intenta de nuevo." << endl;
@@ -172,12 +157,7 @@ void mostrarMenu() {
 
         cout << endl;
 
-    } while (opcion != 5);
+    } while (opcion != 3);
 
-    return 0;
-}
-
-int main() {
-    mostrarMenu();
     return 0;
 }

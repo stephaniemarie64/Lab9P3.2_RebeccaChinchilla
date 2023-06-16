@@ -1,16 +1,10 @@
-#ifndef USUARIO_PAYPAL_H
-#define USUARIO_PAYPAL_H
+#ifndef USUARIOPAYPAL_H
+#define USUARIOPAYPAL_H
 
 #include <string>
 #include <vector>
 
 class UsuarioPaypal {
-private:
-    std::string username;
-    std::string id;
-    std::string password;
-    double saldo;
-    std::vector<std::string> historialCuenta;
 public:
     UsuarioPaypal(const std::string& username, const std::string& id, const std::string& password, double saldo);
     std::string getUsername() const;
@@ -22,6 +16,13 @@ public:
     void mostrarHistorialCuenta() const;
     void guardarEnArchivo() const;
     void cargarDesdeArchivo();
+
+private:
+    std::string username;
+    std::string id;
+    std::string password;
+    double saldo;
+    std::vector<std::string> historialCuenta;
 };
 
 #endif

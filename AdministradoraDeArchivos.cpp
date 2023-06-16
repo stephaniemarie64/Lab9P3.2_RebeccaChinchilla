@@ -1,7 +1,6 @@
 #include "AdministradoraDeArchivos.h"
-#include <iostream> 
-#include "AdministradoraDeArchivos.h"
-
+#include <iostream>
+#include <fstream>
 
 const std::string AdministradoraDeArchivos::nombreArchivo = "cuentas_paypal.bin";
 

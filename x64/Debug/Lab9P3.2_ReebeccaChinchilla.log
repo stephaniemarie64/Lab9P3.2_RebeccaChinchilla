@@ -1,7 +1,32 @@
-﻿  AdministradoraDeArchivos.cpp
-  Lab9P3.2_ReebeccaChinchilla.cpp
-  Paypal.cpp
-  UsuarioPaypal.cpp
+﻿  Lab9P3.2_ReebeccaChinchilla.cpp
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(36,27): error C2039: "verEstadoCuenta": no es un miembro de "Paypal"
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Wallet.h(7,7): message : vea la declaración de 'Paypal'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(39,25): error C2660: 'Paypal::hacerDeposito': la función no acepta 1 argumentos
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Paypal.h(12,10): message : vea la declaración de 'Paypal::hacerDeposito'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(39,25): message : al hacer coincidir la lista de argumentos '(std::string)'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(42,25): error C2660: 'Paypal::hacerRetiro': la función no acepta 1 argumentos
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Paypal.h(13,10): message : vea la declaración de 'Paypal::hacerRetiro'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(42,25): message : al hacer coincidir la lista de argumentos '(std::string)'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(45,27): error C2039: "verHistorial": no es un miembro de "Paypal"
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Wallet.h(7,7): message : vea la declaración de 'Paypal'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(83,19): error C2660: 'Wallet::mostrarEstadoCuenta': la función no acepta 1 argumentos
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Wallet.h(20,10): message : vea la declaración de 'Wallet::mostrarEstadoCuenta'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(83,19): message : al hacer coincidir la lista de argumentos '(std::string)'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(86,19): error C2660: 'Wallet::comprarCrypto': la función no acepta 1 argumentos
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Wallet.h(21,10): message : vea la declaración de 'Wallet::comprarCrypto'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(86,19): message : al hacer coincidir la lista de argumentos '(std::string)'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(89,19): error C2660: 'Wallet::venderCrypto': la función no acepta 1 argumentos
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Wallet.h(22,10): message : vea la declaración de 'Wallet::venderCrypto'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(89,19): message : al hacer coincidir la lista de argumentos '(std::string)'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(124,46): error C2661: 'Paypal::Paypal': ninguna función sobrecargada acepta 2 argumentos
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(124,46): message : al hacer coincidir la lista de argumentos '(std::string, std::string)'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(125,39): error C2039: "guardarPaypal": no es un miembro de "AdministradoraDeArchivos"
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\AdministradoraDeArchivos.h(7,7): message : vea la declaración de 'AdministradoraDeArchivos'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(125,52): error C3861: 'guardarPaypal': no se encontró el identificador
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(141,40): error C2661: 'Wallet::Wallet': ninguna función sobrecargada acepta 2 argumentos
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(141,40): message : al hacer coincidir la lista de argumentos '(std::string, std::string)'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(142,39): error C2039: "guardarWallet": no es un miembro de "AdministradoraDeArchivos"
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\AdministradoraDeArchivos.h(7,7): message : vea la declaración de 'AdministradoraDeArchivos'
+C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\Lab9P3.2_ReebeccaChinchilla.cpp(142,52): error C3861: 'guardarWallet': no se encontró el identificador
   Wallet.cpp
   Generando código...
-  Lab9P3.2_ReebeccaChinchilla.vcxproj -> C:\Users\Rebecca Chinchilla\source\repos\Lab9P3.2_ReebeccaChinchilla\x64\Debug\Lab9P3.2_ReebeccaChinchilla.exe
